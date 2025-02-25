@@ -14,7 +14,5 @@ Route::fallback(function(){
 Route::get('/car/search',[CarController::class,'search'])->name('car.search');
 
 Route::resource('car',CarController::class);
-Route::get('/car/{car}',[CarController::class,'show'])->name('car.show');
-Route::get('/car/{car}/edit',[CarController::class,'edit'])->name('car.edit');
 Route::get('/signup.html',[SignUpController::class,'create'])->name('SignUp');
 Route::get('/login.html',[LoginController::class,'create'])->name('LogIn');
