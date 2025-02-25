@@ -29,7 +29,7 @@
                       <td>Yes</td>
                       <td class="">
                         <a
-                          href="edit_car.html"
+                          href={{route('car.edit',5)}}
                           class="btn btn-edit inline-flex items-center"
                         >
                           <svg
@@ -175,7 +175,7 @@
                       <td>Yes</td>
                       <td class="">
                         <a
-                          href="edit_car.html"
+                          href={{route('car.edit',5)}}
                           class="btn btn-edit inline-flex items-center"
                         >
                           <svg
