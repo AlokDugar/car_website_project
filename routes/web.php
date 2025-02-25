@@ -1,0 +1,20 @@
+<?php
+
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SignUpController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [HomeController::class,'index']);
+
+Route::fallback(function(){
+    return("Fallback! Non-existent");
+});
+Route::get('/car/search',[CarController::class,'search'])->name('car.search');
+
+Route::resource('car',CarController::class);
+Route::get('/car/{car}',[CarController::class,'show'])->name('car.show');
+Route::get('/car/{car}/edit',[CarController::class,'edit'])->name('car.edit');
+Route::get('/signup.html',[SignUpController::class,'create'])->name('SignUp');
+Route::get('/login.html',[LoginController::class,'create'])->name('LogIn');
