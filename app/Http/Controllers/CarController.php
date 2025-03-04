@@ -36,7 +36,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return view('car.show');
+        return view('car.show',['car'=>$car]);
     }
 
     /**
