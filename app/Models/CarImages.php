@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CarImage extends Model
+class CarImages extends Model
 {
     use HasFactory;
     public $timestamps = false;

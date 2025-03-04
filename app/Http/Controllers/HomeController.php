@@ -6,8 +6,9 @@ use App\Models\Car;
 use App\Models\CarFeatures;
 use App\Models\CarImage;
 use App\Models\CarType;
-use Illuminate\Http\Request;
-
+use App\Models\Maker;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class HomeController extends Controller
 {
@@ -154,7 +155,7 @@ class HomeController extends Controller
             ['image_path'=>'something4','position'=>7],
             ['image_path'=>'something5','position'=>8]
         ]);
-*/
+
 
         $car = Car::find(5);
         dump($car->carType);
@@ -167,6 +168,26 @@ class HomeController extends Controller
         dump($carType->cars);
         dump($cars);
 
-        return view('home.index');
+        $maker=Maker::factory()->count(10)->create();
+        dump($maker);
+
+        User::factory()->count(20)->create([
+            'name'=>'Alok'
+        ]);
+
+        User::factory()->count(10)->sequence(
+            ['name'=>'Dristi'],
+            ['name'=>'Ashok'])->create();
+
+        User::factory()->count(10)
+        ->sequence(fn (Sequence $s)=>['name'=>'Name '.$s->index])->create();
+
+        Maker::factory()->count(5)
+        ->hasModels(5)
+        ->create();
+        */
+        $cars = Car::with(['maker', 'model', 'city', 'carType', 'primaryImage'])->limit(30)->get();
+        dump($cars);
+        return view('home.index',['cars'=>$cars]);
     }
 }

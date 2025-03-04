@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,14 +39,31 @@ class Car extends Model
 
     public function primaryImage(): HasOne
     {
-        return $this->hasOne(CarImage::class)->orderBy('position', 'asc')->first();
+        return $this->hasOne(CarImages::class)->orderBy('position', 'asc');
     }
-    public function images():HasMany
+
+    public function carImages():HasMany
     {
-        return $this->hasMany(CarImage::class);
+        return $this->hasMany(CarImages::class);
     }
     public function carType():BelongsTo
     {
         return $this->belongsTo(CarType::class);
+    }
+    public function favouritedByUsers():BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favourite_cars'); // Many-to-Many
+    }
+    public function model():BelongsTo
+    {
+        return $this->belongsTo(Model::class);
+    }
+    public function maker():BelongsTo
+    {
+        return $this->belongsTo(Maker::class);
+    }
+    public function city():BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }
