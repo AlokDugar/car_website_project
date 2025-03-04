@@ -93,8 +93,12 @@ class DatabaseSeeder extends Seeder
             ->count(50)
             ->has(
                 CarImages::factory()
-                ->count(5)
-                ->sequence(fn(Sequence $seq)=>['position'=>$seq->index%5 +1])
+                ->state(new Sequence(
+                    fn($seq) => [
+                        'position' => $seq->index % 5 + 1,
+                        'image_path' => 'https://www.stratstone.com/-/media/stratstone/blog/2024/top-10-best-supercars-of-2024/mclaren-750s-driving-dynamic-hero-1280x516px.ashx'
+                    ]
+                ))
             )
             ->hasFeatures(),
             'favouriteCars'

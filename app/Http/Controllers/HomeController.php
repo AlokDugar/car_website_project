@@ -185,9 +185,13 @@ class HomeController extends Controller
         Maker::factory()->count(5)
         ->hasModels(5)
         ->create();
+
+
+        //fetch 30 car data to display the car cards
+        $cars = Car::limit(30)->get();
+        return view('home.index',['cars'=>$cars]);
         */
-        $cars = Car::with(['maker', 'model', 'city', 'carType', 'primaryImage'])->limit(30)->get();
-        dump($cars);
+        $cars = Car::limit(30)->get();
         return view('home.index',['cars'=>$cars]);
     }
 }
