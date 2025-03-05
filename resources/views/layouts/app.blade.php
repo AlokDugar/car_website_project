@@ -1,5 +1,5 @@
-@props(['title'=>''])
-<x-base-layout title="{{$title}}">
+@props(['title'=>'','bodyClass'=>null])
+<x-base-layout :$title :$bodyClass>
     @include('layouts.partials.header')
     {{$slot}}
     <footer>
