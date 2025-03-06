@@ -14,7 +14,7 @@ class State extends Model
         'id',
         'name'
     ];
-    public function cities(): HasMany// Plural naming convention
+    public function cities(): HasMany
     {
         return $this->hasMany(City::class);
     }

@@ -1,7 +1,7 @@
 @props(['car','isWatchlist'=>false])
 
 <div class="car-item card">
-    <a href="{{ route('car.show', $car->id) }}"> <!-- Dynamically pass the car's ID -->
+    <a href="{{ route('car.show', $car) }}"> <!-- Dynamically pass the car's ID -->
         <img src="{{ $car->primaryImage ? $car->primaryImage->image_path : '/path/to/default-image.png' }}" alt="Car Image" class="car-item-img rounded-t" />
     </a>
     <div class="p-medium">

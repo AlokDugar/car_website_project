@@ -190,8 +190,8 @@ class HomeController extends Controller
         //fetch 30 car data to display the car cards
         $cars = Car::limit(30)->get();
         return view('home.index',['cars'=>$cars]);
-        */
-        $cars = Car::limit(30)->get();
+*/
+        $cars=Car::with(['city.state','carType','fuelType','maker','carModel'])->limit(30)->get();
         return view('home.index',['cars'=>$cars]);
     }
 }
