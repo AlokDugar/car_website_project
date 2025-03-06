@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id()->unique();
-            $table->foreignId('maker_id')->constrained('makers');
-            $table->foreignId('model_id')->constrained('models');
+            $table->foreignId('maker_id')->constrained('makers')->onDelete('cascade');
+            $table->foreignId('model_id')->constrained('car_models')->onDelete('cascade');
             $table->integer('year');
             $table->integer('price');
             $table->string('vin',255);

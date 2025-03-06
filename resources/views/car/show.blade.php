@@ -1,7 +1,7 @@
 <x-app-layout title="ViewCar">
     <main>
         <div class="container">
-          <h1 class="car-details-page-title">{{ optional($car->maker)->name ?? 'Unknown Maker' }} - {{ $car->year }}</h1>
+          <h1 class="car-details-page-title">{{ optional($car->maker)->name ?? 'Unknown Maker' }}  {{$car->carModel->name}} - {{ $car->year }}</h1>
           <div class="car-details-region">{{ optional($car->city)->name ?? 'Unknown City' }} - {{ $car->published_at }}</div>
 
           <div class="car-details-content">
@@ -132,7 +132,7 @@
                   </tr>
                   <tr>
                     <th>Model</th>
-                    <td>-----</td>
+                    <td>{{$car->carModel->name}}</td>
                   </tr>
                   <tr>
                     <th>Year</th>

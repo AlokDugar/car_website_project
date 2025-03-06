@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\CarModel;
 use Illuminate\Support\Str;
 use App\Models\CarType;
 use App\Models\City;
@@ -26,7 +27,7 @@ class CarFactory extends Factory
         return [
             'maker_id'=>Maker::inRandomOrder()->first()->id,
             'model_id'=> function(array $atts){
-                return Model::where('maker_id',$atts['maker_id'])
+                return CarModel::where('maker_id',$atts['maker_id'])
                 ->inRandomOrder()->first()->id;
             },
             'year'=>fake()->year(),

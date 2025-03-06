@@ -54,10 +54,6 @@ class Car extends Model
     {
         return $this->belongsToMany(User::class, 'favourite_cars'); // Many-to-Many
     }
-    public function model():BelongsTo
-    {
-        return $this->belongsTo(Model::class);
-    }
     public function maker():BelongsTo
     {
         return $this->belongsTo(Maker::class);
@@ -65,5 +61,17 @@ class Car extends Model
     public function city():BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+    public function fuelType():BelongsTo
+    {
+        return $this->belongsTo(FuelType::class, 'fuel_type_id');
+    }
+    public function owner():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function carModel():BelongsTo
+    {
+        return $this->belongsTo(CarModel::class, 'model_id');
     }
 }

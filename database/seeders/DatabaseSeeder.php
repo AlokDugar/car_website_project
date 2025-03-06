@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Car;
 use App\Models\CarImages;
+use App\Models\CarModel;
 use App\Models\CarType;
 use App\Models\City;
 use App\Models\FuelType;
@@ -76,7 +77,7 @@ class DatabaseSeeder extends Seeder
             Maker::factory()
             ->state(['name'=>$maker])
             ->has(
-                Model::factory()
+                CarModel::factory()
                 ->count(count($models))
                 ->sequence(...array_map(fn($model)=>['name'=>$model],$models))
             )
