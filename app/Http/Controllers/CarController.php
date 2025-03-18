@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CarController extends Controller
 {
@@ -13,7 +14,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars=Car::where('user_id',1)
+        $cars=Car::where('user_id', Auth::id())
             ->orderBy('published_at','asc')
             ->with(['primaryImage','maker'])
             ->paginate(15);
@@ -84,7 +85,7 @@ class CarController extends Controller
     }
 
     public function watchlist(){
-        $cars=User::find(4)->favouriteCars()->limit(10)->with(['city.state','primaryImage','carType','fuelType','maker','carModel'])->paginate(15);
+        $cars=User::find(Auth::id())->favouriteCars()->limit(10)->with(['city.state','primaryImage','carType','fuelType','maker','carModel'])->paginate(15);
         return view('car.watchlist',['cars'=>$cars]);
     }
 }
