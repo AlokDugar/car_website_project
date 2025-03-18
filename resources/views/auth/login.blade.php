@@ -9,28 +9,51 @@
                 </a>
               </div>
               <h1 class="auth-page-title">Login</h1>
+              @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              @endif
+              @if($errors->has('google'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('google') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              @endif
 
-              <form action="" method="post">
+              <form action="{{route('auth.login')}}" method="POST">
+                @csrf
                 <div class="form-group">
-                  <input type="email" placeholder="Your Email" />
+                  <input type="email" name="email" placeholder="Email" required/>
+                  @error('email')
+                  <div class="text-danger">{{ $message }}</div>
+                  @enderror
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="Your Password" />
+                  <input type="password" name="password" placeholder="Password" required/>
+                  @error('password')
+                  <div class="text-danger">{{ $message }}</div>
+                  @enderror
                 </div>
                 <div class="text-right mb-medium">
-                  <a href="/password-reset.html" class="auth-page-password-reset"
-                    >Reset Password</a
+                  <a href="{{route('password.request')}}" class="auth-page-password-reset"
+                    >Forgot Password?</a
                   >
                 </div>
 
                 <button class="btn btn-primary btn-login w-full">Login</button>
 
                 <div class="grid grid-cols-2 gap-1 social-auth-buttons">
-                  <button
-                    class="btn btn-default flex justify-center items-center gap-1"
-                  >
-                    <img src="/img/google.png" alt="" style="width: 20px" />
-                    Google
+                    <a href="{{ route('auth.google') }}" class="btn btn-default flex justify-center items-center gap-1">
+                        <img src="/img/google.png" alt="" style="width: 20px" />
+                        Google
+                    </a>
+
                   </button>
                   <button
                     class="btn btn-default flex justify-center items-center gap-1"
@@ -41,7 +64,7 @@
                 </div>
                 <div class="login-text-dont-have-account">
                   Don't have an account? -
-                  <a href={{route('SignUp')}}> Click here to create one</a>
+                  <a href={{route('auth.register')}}> Click here to create one</a>
                 </div>
               </form>
             </div>

@@ -10,25 +10,23 @@
           </div>
           <h1 class="auth-page-title">Signup</h1>
 
-          <form action="" method="get">
+          <form action="{{route('auth.register')}}" method="POST">
+            @csrf
             <div class="form-group">
-              <input type="email" placeholder="Your Email" />
+              <input type="email" name="email" placeholder="Email" />
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Your Password" />
+              <input type="password" name="password" placeholder="Password" />
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Repeat Password" />
+              <input type="password" name ="password_confirmation" placeholder="Confirm Password" />
             </div>
             <hr />
             <div class="form-group">
-              <input type="text" placeholder="First Name" />
+              <input type="text" name="name" placeholder="Name" />
             </div>
             <div class="form-group">
-              <input type="text" placeholder="Last Name" />
-            </div>
-            <div class="form-group">
-              <input type="text" placeholder="Phone" />
+              <input type="text" name="phone" placeholder="Phone" />
             </div>
             <button class="btn btn-primary btn-login w-full">Register</button>
 
@@ -48,7 +46,7 @@
             </div>
             <div class="login-text-dont-have-account">
               Already have an account? -
-              <a href={{route('LogIn')}}> Click here to login </a>
+              <a href={{route('auth.login')}}> Click here to login </a>
             </div>
           </form>
         </div>
