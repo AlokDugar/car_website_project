@@ -7,19 +7,20 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignUpController;
+use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::get('/home', [HomeController::class,'index']);
+Route::get('/home', [HomeController::class,'index'])->middleware(CustomAuth::class);
 
 Route::fallback(function(){
     return("Fallback! Non-existent");
 });
-Route::get('/car/search',[CarController::class,'search'])->name('car.search');
-Route::get('/car/watchlist',[CarController::class,'watchlist'])->name('car.watchlist');
+Route::get('/car/search',[CarController::class,'search'])->name('car.search')->middleware(CustomAuth::class);
+Route::get('/car/watchlist',[CarController::class,'watchlist'])->name('car.watchlist')->middleware(CustomAuth::class);
 
-Route::resource('car',CarController::class);
+Route::resource('car',CarController::class)->middleware(CustomAuth::class);
 
 Route::get('/', [LoginController::class, 'showLoginForm']);
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('auth.login');
@@ -46,6 +47,6 @@ Route::post('/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
     return redirect('/login')->with('success', 'You have been logged out!');
-})->name('logout');
+})->name('logout')->middleware(CustomAuth::class);
 
 
