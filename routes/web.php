@@ -11,8 +11,6 @@ use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ModelController;
-
 Route::get('/home', [HomeController::class,'index'])->middleware(CustomAuth::class);
 
 Route::fallback(function(){
@@ -50,5 +48,4 @@ Route::post('/logout', function () {
     return redirect('/login')->with('success', 'You have been logged out!');
 })->name('logout')->middleware(CustomAuth::class);
 
-Route::get('/filter-models', [ModelController::class, 'filter'])->name('filter.models');
 
