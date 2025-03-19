@@ -19,7 +19,7 @@ class CustomAuth
     {
         if (!Auth::check()) {
 
-            return redirect('/login')->withErrors(['auth' => 'You need to LogIn to access the pages.']);
+            return redirect('/login')->with('error', 'You need to be logged in to access the page.');
         }
         return $next($request);
     }

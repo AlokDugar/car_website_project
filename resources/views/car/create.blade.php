@@ -1,3 +1,18 @@
+<?php
+    use App\Models\Maker;
+    use App\Models\CarModel;
+    use App\Models\CarType;
+    use App\Models\FuelType;
+    use App\Models\State;
+    use App\Models\City;
+
+    $makers=Maker::all();
+    $models=CarModel::all();
+    $carTypes=CarType::all();
+    $fuelTypes=FuelType::all();
+    $states=State::all();
+    $cities=City::all();
+?>
 <x-app-layout title="AddNew">
     <main>
         <div class="container-small">
@@ -16,9 +31,9 @@
                       <label>Maker</label>
                       <select>
                         <option value="">Maker</option>
-                        <option value="bmw">BMW</option>
-                        <option value="lexus">Lexus</option>
-                        <option value="mercedes">Mercedes</option>
+                        @foreach ($makers as $maker)
+                            <option value="{{$maker->name}}">{{$maker->name}}</option>
+                        @endforeach
                       </select>
                       <p class="error-message">This field is required</p>
                     </div>
@@ -28,6 +43,9 @@
                       <label>Model</label>
                       <select>
                         <option value="">Model</option>
+                        @foreach ($models as $model)
+                            <option value="{{$model->name}}">{{$model->name}}</option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
@@ -78,27 +96,15 @@
                 <div class="form-group">
                   <label>Car Type</label>
                   <div class="row">
-                    <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="car_type" value="sedan" />
-                        Sedan
-                      </label>
+                  @foreach ($carTypes as $carType)
+                  <div class="col">
+                    <label class="inline-radio">
+                      <input type="radio" name="car_type" value="sedan" />
+                      {{$carType->name}}
                     </div>
-
-                    <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="car_type" value="hatchback" />
-                        Hatchback
-                      </label>
-                    </div>
-
-                    <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="car_type" value="suv" />
-                        SUV (Sport Utility Vehicle)
-                      </label>
-                    </div>
-                  </div>
+                    @endforeach
+                </label>
+                </div>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -123,30 +129,13 @@
                 <div class="form-group">
                   <label>Fuel Type</label>
                   <div class="row">
+                    @foreach ($fuelTypes as $fuelType)
                     <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="fuel_type" value="gasoline" />
-                        Gasoline
-                      </label>
-                    </div>
-                    <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="fuel_type" value="diesel" />
-                        Diesel
-                      </label>
-                    </div>
-                    <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="fuel_type" value="electric" />
-                        Electric
-                      </label>
-                    </div>
-                    <div class="col">
-                      <label class="inline-radio">
-                        <input type="radio" name="fuel_type" value="hybrid" />
-                        Hybrid
-                      </label>
-                    </div>
+                        <label class="inline-radio">
+                          <input type="radio" name="car_type" value="sedan" />
+                          {{$fuelType->name}}
+                        </div>
+                    @endforeach
                   </div>
                 </div>
                 <div class="row">
@@ -155,6 +144,9 @@
                       <label>State/Region</label>
                       <select>
                         <option value="">State/Region</option>
+                        @foreach ($states as $state)
+                            <option value="{{$state->name}}">{{$state->name}}</option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
@@ -163,6 +155,9 @@
                       <label>City</label>
                       <select>
                         <option value="">City</option>
+                        @foreach ($cities as $city)
+                            <option value="{{$city->name}}">{{$city->name}}</option>
+                        @endforeach
                       </select>
                     </div>
                   </div>

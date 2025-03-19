@@ -17,17 +17,9 @@
                     </button>
                 </div>
               @endif
-              @if($errors->has('google'))
+              @if(session('error'))
                 <div class="alert alert-danger">
-                    {{ $errors->first('google') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-              @endif
-              @if($errors->has('auth'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('auth') }}
+                    {{ session('error') }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

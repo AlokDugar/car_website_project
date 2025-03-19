@@ -10,7 +10,8 @@ use App\Http\Controllers\SignUpController;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
+
+use App\Http\Controllers\ModelController;
 
 Route::get('/home', [HomeController::class,'index'])->middleware(CustomAuth::class);
 
@@ -49,4 +50,5 @@ Route::post('/logout', function () {
     return redirect('/login')->with('success', 'You have been logged out!');
 })->name('logout')->middleware(CustomAuth::class);
 
+Route::get('/filter-models', [ModelController::class, 'filter'])->name('filter.models');
 

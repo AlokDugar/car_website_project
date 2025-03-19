@@ -39,7 +39,7 @@
                     upload photos and the perfect buyer will find it...
                   </p>
 
-                  <button class="btn btn-hero-slider">Add Your Car</button>
+                  <a href="{{route('car.create')}}"> <button class="btn btn-hero-slider">Add Your Car</button> </a>
                 </div>
               </div>
               <div class="slide-image">

@@ -39,7 +39,7 @@ class GoogleLoginController extends Controller
             }
         } catch (\Exception $e) {
             Log::error('Google authentication failed: ' . $e->getMessage());
-            return redirect('/login')->withErrors(['google' => 'Failed to authenticate with Google.']);
-        }
+            return redirect('/login')->with('error', 'Failed to Authenticate with Google.');
     }
+}
 }
