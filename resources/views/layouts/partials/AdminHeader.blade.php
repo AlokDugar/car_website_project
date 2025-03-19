@@ -2,7 +2,7 @@
 
     <!-- Logo -->
     <div class="header-left">
-        <a href="#" class="logo">
+        <a href="{{route('dashboard.index')}}" class="logo">
             <img src="img/logoipsum-265.svg" width="100" height="40" alt="">
         </a>
     </div>
@@ -262,15 +262,19 @@
                     <img src="{{ asset('assets/img/profiles/avatar-21.jpg') }}" alt="">
                     <span class="status online"></span>
                 </span>
-                <span>Admin</span>
+                <span>{{ explode(' ', Auth::guard('admin')->user()->username)[0] ?? 'Admin' }}</span>
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{ url('profile') }}">My Profile</a>
                 <a class="dropdown-item" href="{{ url('settings') }}">Settings</a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Logout
                 </a>
 
+                <form id="logout-form" action="{{ route('adminlogout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </div>
         </li>
     </ul>
@@ -282,10 +286,14 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="profile.html">My Profile</a>
             <a class="dropdown-item" href="settings.html">Settings</a>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Logout
                 </a>
 
+                <form id="logout-form" action="{{ route('adminlogout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
         </div>
     </div>
     <!-- /Mobile Menu -->
