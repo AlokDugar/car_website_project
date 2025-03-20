@@ -29,10 +29,6 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [SignUpController::class, 'showRegistrationForm'])->name('auth.register');
 Route::post('/register', [SignUpController::class, 'register']);
 
-Route::get('/dashboard',function(){
-    return view('dashboard.index');
-});
-
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
 
@@ -51,5 +47,3 @@ Route::post('/logout', function () {
 
 require __DIR__.'/admin_auth.php';
 
-Route::resource('/dashboard_users',UserController::class);
-Route::get('/dashboard_users/search', [UserController::class, 'search'])->name('search');
