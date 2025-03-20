@@ -15,4 +15,8 @@ class CarImages extends Model
         'image_path',
         'position'
     ];
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
 }

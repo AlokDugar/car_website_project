@@ -26,7 +26,7 @@ class CarFactory extends Factory
     {
         return [
             'maker_id'=>Maker::inRandomOrder()->first()->id,
-            'model_id'=> function(array $atts){
+            'carModel_id'=> function(array $atts){
                 return CarModel::where('maker_id',$atts['maker_id'])
                 ->inRandomOrder()->first()->id;
             },

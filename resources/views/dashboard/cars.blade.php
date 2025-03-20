@@ -60,34 +60,46 @@
         </div>
     </div>
 
-    <div class="row staff-grid-row">
+    <div class="car-items-listing">
         @foreach ($cars as $car)
-        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-            <div class="profile-widget">
-                <div class="profile-img">
-                    <a href="profile.html" class="avatar"><img src="{{$car->primaryImage->image_path}}" alt=""></a>
-                </div>
-                <div class="dropdown profile-action">
-                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_car"
-                        onclick="editCar('{{ $car->id }}', '{{ $car->maker }}', '{{ $car->carModel }}', '{{ $car->year }}', '{{ $car->price }}')">
-                        <i class="fa fa-pencil m-r-5"></i> Edit
-                        </a>
+        <div class="car-item card">
+            <a href="{{ route('car.show', $car) }}"> <!-- Dynamically pass the car's ID -->
+                <img src="{{
+                    filter_var($car->primaryImage->image_path, FILTER_VALIDATE_URL)
+                    ? $car->primaryImage->image_path
+                    : asset('storage/' . $car->primaryImage->image_path)
+                }}" alt="Car Image" class="car-item-img rounded-t" />
+            </a>
+            <div class="dropdown profile-action">
+                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_car"
+                    onclick="editCar('{{ $car->id }}', '{{ $car->maker->id }}', '{{ $car->carModel->id }}', '{{ $car->year }}', '{{ $car->price }}')">
+                    <i class="fa fa-pencil m-r-5"></i> Edit
+                    </a>
 
-                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#delete_car"
-                        onclick="deleteCar('{{ $car->id }}')">
-                        <i class="fa fa-trash m-r-5"></i> Delete
-                        </a>
-                        <script>
-                            function deleteCar(id) {
-                                document.getElementById("deleteForm").action = "/dashboard_cars/" + id;
-                            }
-                        </script>
-                    </div>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#delete_car"
+                    onclick="deleteCar('{{ $car->id }}')">
+                    <i class="fa fa-trash m-r-5"></i> Delete
+                    </a>
+                    <script>
+                        function deleteCar(id) {
+                            document.getElementById("deleteForm").action = "/dashboard_cars/" + id;
+                        }
+                    </script>
                 </div>
-                <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{$car->maker->name}} {{$car->carModel->name}}</a></h4>
-                <div class="small text-muted">{{$car->year}} | {{$car->price}}</div>
+            </div>
+            <div class="p-medium">
+                <div class="flex items-center justify-between">
+                    <small class="m-0 text-muted">{{ optional($car->city)->name ?? 'Unknown City' }}</small> <!-- Safe null check -->
+                </div>
+                <h2 class="car-item-title">{{ $car->year }} - {{ optional($car->maker)->name ?? 'Unknown Maker' }}  {{ optional($car->carModel)->name ?? 'Unknown Model' }}</h2> <!-- Safe null check -->
+                <p class="car-item-price">${{ number_format($car->price, 2) }}</p> <!-- Format price with commas -->
+                <hr />
+                <p class="m-0">
+                    <span class="car-item-badge">{{ optional($car->carType)->name ?? 'Unknown Type' }}</span> <!-- Safe null check -->
+                    <span class="car-item-badge">{{ optional($car->fuelType)->name ?? 'Unknown Fuel' }}</span> <!-- Safe null check -->
+                </p>
             </div>
         </div>
         @endforeach
@@ -112,10 +124,10 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Maker</label>
-                                        <select name="maker" required>
+                                        <select name="maker_id" required>
                                             <option value="">Maker</option>
                                             @foreach ($makers as $maker)
-                                                <option value="{{$maker->name}}">{{$maker->name}}</option>
+                                                <option value="{{$maker->id}}">{{$maker->name}}</option>
                                             @endforeach
                                         </select>
                                         <p class="error-message">This field is required</p>
@@ -124,10 +136,10 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Model</label>
-                                        <select name="model" required>
+                                        <select name="carModel_id" required>
                                             <option value="">Model</option>
                                             @foreach ($models as $model)
-                                                <option value="{{$model->name}}">{{$model->name}}</option>
+                                                <option value="{{$model->id}}">{{$model->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -142,7 +154,6 @@
                                             <option value="2024">2024</option>
                                             <option value="2023">2023</option>
                                             <option value="2022">2022</option>
-                                            <!-- Add other years as needed -->
                                         </select>
                                     </div>
                                 </div>
@@ -157,7 +168,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Vin Code</label>
-                                        <input class="form-control" type="text" name="vin_code" placeholder="Vin Code" required>
+                                        <input class="form-control" type="text" name="vin" placeholder="Vin Code" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -173,7 +184,7 @@
                                     @foreach ($carTypes as $carType)
                                         <div class="col">
                                             <label class="inline-radio">
-                                                <input type="radio" name="car_type" value="{{$carType->name}}" required>
+                                                <input type="radio" name="car_type_id" value="{{$carType->id}}" required>
                                                 {{$carType->name}}
                                             </label>
                                         </div>
@@ -186,7 +197,7 @@
                                     @foreach ($fuelTypes as $fuelType)
                                         <div class="col">
                                             <label class="inline-radio">
-                                                <input type="radio" name="fuel_type" value="{{$fuelType->name}}" required>
+                                                <input type="radio" name="fuel_type_id" value="{{$fuelType->id}}" required>
                                                 {{$fuelType->name}}
                                             </label>
                                         </div>
@@ -208,10 +219,10 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>City</label>
-                                        <select name="city" required>
+                                        <select name="city_id" required>
                                             <option value="">City</option>
                                             @foreach ($cities as $city)
-                                                <option value="{{$city->name}}">{{$city->name}}</option>
+                                                <option value="{{$city->id}}">{{$city->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -314,10 +325,11 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                         </svg>
                                     </div>
-                                    <input id="carFormImageUpload" type="file" name="images[]" multiple />
+                                    <input id="carFormImageUpload" type="file" name="image" />
                                 </div>
                                 <div id="imagePreviews" class="car-form-images"></div>
                             </div>
+
                         </div>
                         <div class="p-medium" style="width: 100%">
                             <div class="flex justify-end gap-1">
@@ -349,13 +361,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Maker <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="maker" id="edit_maker" required>
+                                <input class="form-control" type="text" name="maker_id" id="edit_maker" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Car Model <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="carModel" id="edit_carModel" required>
+                                <input class="form-control" type="text" name="carModel_id" id="edit_carModel" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -381,9 +393,9 @@
 </div>
 
 <script>
-    function editCar(id, maker, carModel, year, price) {
-        document.getElementById("edit_maker").value = maker;
-        document.getElementById("edit_carModel").value = carModel;
+    function editCar(id, maker_id, carModel_id, year, price) {
+        document.getElementById("edit_maker").value = maker_id;
+        document.getElementById("edit_carModel").value = carModel_id;
         document.getElementById("edit_year").value = year;
         document.getElementById("edit_price").value = price;
         document.getElementById("editForm").action = "/dashboard_cars/" + id;
@@ -412,13 +424,13 @@
 <script>
 $(document).on('click', '.edit-car', function() {
     let id = $(this).data('id');
-    let maker = $(this).data('maker');
-    let carModel = $(this).data('carModel');
+    let maker = $(this).data('maker_id');
+    let carModel = $(this).data('carModel_id');
     let year = $(this).data('year');
     let price = $(this).data('price');
 
-    $('#edit_maker').val(maker);
-    $('#edit_carModel').val(carModel);
+    $('#edit_maker').val(maker_id);
+    $('#edit_carModel').val(carModel_id);
     $('#edit_year').val(year);
     $('#edit_price').val(price);
 

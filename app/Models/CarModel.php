@@ -18,7 +18,7 @@ class CarModel extends EloquentModel
     ];
     public function cars():HasMany
     {
-        return $this->hasMany(Car::class, 'model_id');
+        return $this->hasMany(Car::class, 'carModel_id');
     }
     public function maker():BelongsTo
     {
