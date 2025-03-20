@@ -7,6 +7,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignUpController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -49,3 +50,6 @@ Route::post('/logout', function () {
 })->name('logout')->middleware(CustomAuth::class);
 
 require __DIR__.'/admin_auth.php';
+
+Route::resource('/dashboard_users',UserController::class);
+Route::get('/dashboard_users/search', [UserController::class, 'search'])->name('search');

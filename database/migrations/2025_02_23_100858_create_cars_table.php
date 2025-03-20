@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('mileage');
             $table->foreignId('car_type_id')->constrained('car_types');
             $table->foreignId('fuel_type_id')->constrained('fuel_types');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('city_id')->constrained('cities');
             $table->string('address',255);
             $table->string('phone',45);

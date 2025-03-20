@@ -21,8 +21,7 @@
             action=""
             method="POST"
             enctype="multipart/form-data"
-            class="card add-new-car-form"
-          >
+            class="card add-new-car-form">
             <div class="form-content">
               <div class="form-details">
                 <div class="row">

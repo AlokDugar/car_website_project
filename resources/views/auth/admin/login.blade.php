@@ -42,5 +42,8 @@
         <div class="form-group text-center">
             <button class="btn btn-primary account-btn" type="submit">Login</button>
         </div>
+        <div class="account-footer">
+            <p>Login as a User? <a href="{{ route('auth.login') }}">Click Here</a></p>
+        </div>
     </form>
 </x-auth-layout>
