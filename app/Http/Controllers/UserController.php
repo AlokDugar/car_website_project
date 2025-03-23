@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -14,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         return view('dashboard.users', compact('users'));
     }
 
@@ -68,10 +67,9 @@ public function update(Request $request, $id)
     /**
      * Remove the specified user (from delete modal).
      */
-    public function destroy($id)
-    {
-        $user = User::find($id);
-        $user->delete();
+    public function destroy(User $dashboard_user) {
+        $dashboard_user->delete();
         return redirect()->route('dashboard_users.index')->with('success', 'User deleted successfully.');
     }
+
 }

@@ -1,13 +1,18 @@
 <?php
 
+use App\Http\Controllers\auth\AdminForgotController;
+use App\Http\Controllers\auth\AdminLoginController;
+use App\Http\Controllers\auth\AdminResetController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\DashboardCarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignUpController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,5 +50,37 @@ Route::post('/logout', function () {
     return redirect('/login')->with('success', 'You have been logged out!');
 })->name('logout')->middleware(CustomAuth::class);
 
-require __DIR__.'/admin_auth.php';
+
+
+
+Route::middleware('guest:admin')->group(function () {
+
+    Route::get('/adminlogin', [AdminLoginController::class, 'showLoginForm'])->name('auth.adminLogin');
+    Route::post('/adminlogin', [AdminLoginController::class, 'login']);
+
+    Route::get('/adminforgot-password', [AdminForgotController::class, 'showLinkRequestForm'])->name('password.adminRequest');
+    Route::post('/adminforgot-password', [AdminForgotController::class, 'sendResetLink'])->name('password.adminEmail');
+
+    Route::get('/adminreset-password/{token}', [AdminResetController::class, 'showResetForm'])->name('password.adminReset');
+    Route::post('/adminreset-password', [AdminResetController::class, 'resetPassword'])->name('password.adminUpdate');
+
+});
+
+
+Route::get('/admin_dashboard',function(){
+    return view('dashboard.index');
+})->name('dashboard.index')->middleware(AdminAuth::class);
+
+Route::post('/adminlogout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/adminlogin')->with('success', 'You have been logged out!');
+})->name('adminlogout')->middleware(AdminAuth::class);
+
+Route::resource('dashboard_users', UserController::class)->middleware(AdminAuth::class);
+Route::resource('dashboard_cars',DashboardCarController::class)->middleware(AdminAuth::class);
+
+
+
 

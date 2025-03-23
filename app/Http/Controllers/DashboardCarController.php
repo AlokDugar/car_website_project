@@ -13,7 +13,7 @@ class DashboardCarController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
+        $cars = Car::paginate(15);
         return view('dashboard.cars', compact('cars'));
     }
 
@@ -143,10 +143,8 @@ class DashboardCarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
-        $car= Car::find($id);
-        $car->delete();
+    public function destroy(Car $dashboard_car) {
+        $dashboard_car->delete();
         return redirect()->route('dashboard_cars.index')->with('success', 'Car deleted successfully.');
     }
 }

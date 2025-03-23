@@ -16,7 +16,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">User</h3>
+                <h3 class="page-title">User Management</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item active">User</li>
@@ -24,10 +24,6 @@
             </div>
             <div class="col-auto float-right ml-auto">
                 <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add User</a>
-                <div class="view-icons">
-                    <a href="employees.html" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                    <a href="employees-list.html" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
-                </div>
             </div>
         </div>
     </div>
@@ -52,38 +48,58 @@
         </div>
     </div>
 
-    <div class="row staff-grid-row">
-        @foreach ($users as $user )
-        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-            <div class="profile-widget">
-                <div class="profile-img">
-                    <a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-02.jpg" alt=""></a>
-                </div>
-                <div class="dropdown profile-action">
-                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"
-                        onclick="editUser('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->phone }}')">
-                        <i class="fa fa-pencil m-r-5"></i> Edit
-                        </a>
+    <!-- User Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Employee ID</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th class="text-right no-sort">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                        <tr>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a href="profile.html" class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a>
+                                    <a href="profile.html"> {{ $user->name }}</a>
+                                </h2>
+                            </td>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->phone }}</td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
+                                    onclick="editUser('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->phone }}')">
+                                    <i class="fa fa-pencil"></i> Edit
+                                </a>
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#delete_employee"
+                                onclick="deleteUser('{{ $user->id }}')">
+                                <i class="fa fa-trash"></i> Delete
+                                </a>
 
-                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#delete_employee"
-                        onclick="deleteUser('{{ $user->id }}')">
-                        <i class="fa fa-trash m-r-5"></i> Delete
-                        </a>
-                        <script>
-                            function deleteUser(id) {
-                                document.getElementById("deleteForm").action = "/dashboard_users/" + id;
-                            }
-                        </script>
-                    </div>
-                </div>
-                <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{$user->name}}</a></h4>
-                <div class="small text-muted">{{$user->email}}</div>
+                            </div>
+                        </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{$users->onEachSide(1)->links()}}
             </div>
         </div>
-        @endforeach
     </div>
+    <!-- /User Table -->
+</div>
 </div>
 <!-- Add User Modal -->
 <div id="add_employee" class="modal custom-modal fade" role="dialog">
@@ -211,7 +227,7 @@
         </div>
     </div>
 </div>
-<!-- Delete User Modal -->
+
 <script>
 $(document).on('click', '.edit-user', function() {
     let id = $(this).data('id');
@@ -226,12 +242,11 @@ $(document).on('click', '.edit-user', function() {
     $('#editForm').attr('action', "/dashboard_users/" + id);
 });
 
-    $(document).on('click', '.delete-user', function() {
-        let id = $(this).data('id');
-        $('#delete_user_id').val(id);
+function deleteUser(id) {
+    let action = "/dashboard_users/" + id;
+    $('#deleteForm').attr('action', action);
+}
 
-        let action = $('#deleteUserForm').attr('action').replace(':id', id);
-        $('#deleteUserForm').attr('action', action);
-    });
+
 </script>
 @endsection

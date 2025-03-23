@@ -31,7 +31,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Car</h3>
+                <h3 class="page-title">Car Management</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item active">Cars</li>
@@ -39,10 +39,6 @@
             </div>
             <div class="col-auto float-right ml-auto">
                 <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_car"><i class="fa fa-plus"></i> Add Car</a>
-                <div class="view-icons">
-                    <a href="cars.html" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                    <a href="cars-list.html" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
-                </div>
             </div>
         </div>
     </div>
@@ -67,50 +63,68 @@
         </div>
     </div>
 
-    <div class="car-items-listing">
-        @foreach ($cars as $car)
-        <div class="car-item card">
-            <a href="{{ route('car.show', $car) }}"> <!-- Dynamically pass the car's ID -->
-                <img src="{{
-                    filter_var($car->primaryImage->image_path, FILTER_VALIDATE_URL)
-                    ? $car->primaryImage->image_path
-                    : asset('storage/' . $car->primaryImage->image_path)
-                }}" alt="Car Image" class="car-item-img rounded-t" />
-            </a>
-            <div class="dropdown profile-action">
-                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_car"
-                    onclick="editCar('{{ $car->id }}', '{{ $car->maker->id }}', '{{ $car->carModel->id }}', '{{ $car->year }}', '{{ $car->price }}')">
-                    <i class="fa fa-pencil m-r-5"></i> Edit
-                    </a>
-
-                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#delete_car"
-                    onclick="deleteCar('{{ $car->id }}')">
-                    <i class="fa fa-trash m-r-5"></i> Delete
-                    </a>
-                    <script>
-                        function deleteCar(id) {
-                            document.getElementById("deleteForm").action = "/dashboard_cars/" + id;
-                        }
-                    </script>
-                </div>
-            </div>
-            <div class="p-medium">
-                <div class="flex items-center justify-between">
-                    <small class="m-0 text-muted">{{ optional($car->city)->name ?? 'Unknown City' }}</small> <!-- Safe null check -->
-                </div>
-                <h2 class="car-item-title">{{ $car->year }} - {{ optional($car->maker)->name ?? 'Unknown Maker' }}  {{ optional($car->carModel)->name ?? 'Unknown Model' }}</h2> <!-- Safe null check -->
-                <p class="car-item-price">${{ number_format($car->price, 2) }}</p> <!-- Format price with commas -->
-                <hr />
-                <p class="m-0">
-                    <span class="car-item-badge">{{ optional($car->carType)->name ?? 'Unknown Type' }}</span> <!-- Safe null check -->
-                    <span class="car-item-badge">{{ optional($car->fuelType)->name ?? 'Unknown Fuel' }}</span> <!-- Safe null check -->
-                </p>
-            </div>
+    <!-- Car Table -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table datatable">
+                <thead>
+                    <tr>
+                        <th>Car Image</th>
+                        <th>Year</th>
+                        <th>Maker</th>
+                        <th>Model</th>
+                        <th>City</th>
+                        <th>Type</th>
+                        <th>Fuel</th>
+                        <th>Price</th>
+                        <th class="text-right no-sort">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cars as $car)
+                    <tr>
+                        <td>
+                            <img src="{{
+                                filter_var($car->primaryImage->image_path, FILTER_VALIDATE_URL)
+                                ? $car->primaryImage->image_path
+                                : asset('storage/' . $car->primaryImage->image_path)
+                            }}" alt="Car Image" style="width: 50px; height: auto;" />
+                        </td>
+                        <td>{{ $car->year }}</td>
+                        <td>{{ optional($car->maker)->name ?? 'Unknown' }}</td>
+                        <td>{{ optional($car->carModel)->name ?? 'Unknown' }}</td>
+                        <td>{{ optional($car->city)->name ?? 'Unknown' }}</td>
+                        <td>{{ optional($car->carType)->name ?? 'Unknown' }}</td>
+                        <td>{{ optional($car->fuelType)->name ?? 'Unknown' }}</td>
+                        <td>${{ number_format($car->price, 2) }}</td>
+                        <td class="text-right">
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#edit_car"
+                                    onclick="editCar('{{ $car->id }}', '{{ $car->maker->id }}', '{{ $car->carModel->id }}', '{{ $car->year }}', '{{ $car->price }}')">
+                                        <i class="fa fa-pencil"></i> Edit
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#delete_car"
+                                    onclick="deleteCar('{{ $car->id }}')">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            {{$cars->onEachSide(1)->links()}}
         </div>
-        @endforeach
     </div>
+</div>
+<!-- /Car Table -->
+
 </div>
 <!-- Add Car Modal -->
 <div id="add_car" class="modal custom-modal fade" role="dialog">
@@ -424,6 +438,7 @@
                     <button type="submit" class="btn btn-danger">Delete</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </form>
+
             </div>
         </div>
     </div>
@@ -444,12 +459,12 @@ $(document).on('click', '.edit-car', function() {
     $('#editForm').attr('action', "/dashboard_cars/" + id);
 });
 
-$(document).on('click', '.delete-car', function() {
-    let id = $(this).data('id');
-    $('#delete_car_id').val(id);
+function deleteCar(id) {
+    let action = "/dashboard_cars/" + id;  // This should match your route definition
+    $('#deleteForm').attr('action', action);  // Dynamically set the form action
+    $('#delete_car').modal('show');  // Show the modal
+}
 
-    let action = $('#deleteCarForm').attr('action').replace(':id', id);
-    $('#deleteCarForm').attr('action', action);
-});
+
 </script>
 @endsection
