@@ -26,7 +26,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|min:10|max:10',
         ]);
 
         User::create([
@@ -51,7 +51,7 @@ public function update(Request $request, $id)
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email,' . $user->id,
-        'phone' => 'nullable|string|max:10'.$user->id,
+        'phone' => 'nullable|string|min:10|max:10'.$user->id,
     ]);
 
     $user->update([

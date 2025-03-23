@@ -20,7 +20,7 @@ class SignUpController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'name' => 'required|string|max:255',
-            'phone' => 'required'
+            'phone' => 'required|min:10|max:10'
         ]);
 
         User::create([
