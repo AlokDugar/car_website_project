@@ -169,9 +169,6 @@
                                         <label>Year</label>
                                         <select name="year" required>
                                             <option value="">Year</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2022">2022</option>
                                         </select>
                                     </div>
                                 </div>
@@ -523,5 +520,16 @@ function deleteCar(id) {
 
     });
 
+
+
+    const select = document.querySelector('select[name="year"]');
+    const currentYear = new Date().getFullYear();
+
+    for (let year = currentYear; year >= 2000; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        select.appendChild(option);
+    }
 </script>
 @endsection

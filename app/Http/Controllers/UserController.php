@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserDetailsMail;
+use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
@@ -21,23 +25,27 @@ class UserController extends Controller
      * Store a newly created user (from modal form).
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'phone' => 'nullable|string|min:10|max:10',
-        ]);
+{
+    // Validate the form data
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable|string|min:10|max:10',
+    ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-        ]);
+    $password = Str::random(6);
 
-        return redirect()->route('dashboard_users.index')->with('success', 'User created successfully.');
-    }
+    $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->password = Hash::make($password);
+    $user->phone = $request->phone;
+    $user->save();
+
+    Mail::to($request->email)->send(new UserDetailsMail($user, $password));
+
+    return redirect()->route('dashboard_users.index')->with('success', 'User created successfully!');
+}
 
     /**
      * Update the specified user (from modal form).

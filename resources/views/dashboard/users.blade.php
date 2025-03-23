@@ -129,18 +129,6 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Password</label>
-                                <input class="form-control" type="password" name="password" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Confirm Password</label>
-                                <input class="form-control" type="password" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label class="col-form-label">Phone </label>
                                 <input class="form-control" type="text" name="phone">
                             </div>
