@@ -81,6 +81,8 @@ Route::post('/adminlogout', function () {
 Route::resource('dashboard_users', UserController::class)->middleware(AdminAuth::class);
 Route::resource('dashboard_cars',DashboardCarController::class)->middleware(AdminAuth::class);
 
+Route::get('/get-models/{id}',[DashboardCarController::class,'getModels'])->middleware(AdminAuth::class);
+Route::get('/get-cities/{id}',[DashboardCarController::class,'getCities'])->middleware(AdminAuth::class);
 
 
 

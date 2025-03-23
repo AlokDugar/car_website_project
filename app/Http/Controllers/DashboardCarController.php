@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\CarFeatures;
+use App\Models\CarModel;
+use App\Models\City;
 use Illuminate\Http\Request;
 
 class DashboardCarController extends Controller
@@ -146,5 +148,17 @@ class DashboardCarController extends Controller
     public function destroy(Car $dashboard_car) {
         $dashboard_car->delete();
         return redirect()->route('dashboard_cars.index')->with('success', 'Car deleted successfully.');
+    }
+
+    public function getModels($maker_id)
+    {
+        $models = CarModel::where('maker_id',$maker_id)->get();
+        return response()->json(['models'=>$models]);
+    }
+
+    public function getCities($state_id)
+    {
+        $cities = City::where('state_id',$state_id)->get();
+        return response()->json(['cities'=>$cities]);
     }
 }

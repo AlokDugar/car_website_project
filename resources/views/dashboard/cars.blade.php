@@ -145,7 +145,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Maker</label>
-                                        <select name="maker_id" required>
+                                        <select name="maker_id" id="Maker" required>
                                             <option value="">Maker</option>
                                             @foreach ($makers as $maker)
                                                 <option value="{{$maker->id}}">{{$maker->name}}</option>
@@ -157,11 +157,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Model</label>
-                                        <select name="carModel_id" required>
+                                        <select name="carModel_id" id="Model" required>
                                             <option value="">Model</option>
-                                            @foreach ($models as $model)
-                                                <option value="{{$model->id}}">{{$model->name}}</option>
-                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -229,10 +226,10 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>State/Region</label>
-                                        <select name="state" required>
+                                        <select name="state_id" id="State" required>
                                             <option value="">State/Region</option>
                                             @foreach ($states as $state)
-                                                <option value="{{$state->name}}">{{$state->name}}</option>
+                                                <option value="{{$state->id}}">{{$state->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -240,11 +237,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>City</label>
-                                        <select name="city_id" required>
+                                        <select name="city_id" id="City" required>
                                             <option value="">City</option>
-                                            @foreach ($cities as $city)
-                                                <option value="{{$city->id}}">{{$city->name}}</option>
-                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -465,6 +459,69 @@ function deleteCar(id) {
     $('#delete_car').modal('show');  // Show the modal
 }
 
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function(){
+
+        $("#State").change(function(){
+
+            var state_id = $(this).val();
+            if(state_id == ""){
+                $("#City").html("<option value=''>City</option>");
+            }
+
+            $.ajax({
+                url:"/get-cities/"+state_id,
+                type:"GET",
+                success:function(data){
+                    var cities = data.cities;
+                    var html = "<option value=''>City</option>";
+                    for(let i =0;i<cities.length;i++){
+                        html += `
+                        <option value="`+cities[i]['id']+`">`+cities[i]['name']+`</option>
+                        `;
+                    }
+                    $("#City").html(html);
+                }
+            });
+
+        });
+
+    });
+
+
+
+    $(document).ready(function(){
+
+        $("#Maker").change(function(){
+
+            var maker_id = $(this).val();
+            if(maker_id == ""){
+                $("#Model").html("<option value=''>Model</option>");
+            }
+
+            $.ajax({
+                url:"/get-models/"+maker_id,
+                type:"GET",
+                success:function(data){
+                    var models = data.models;
+                    var html = "<option value=''>Model</option>";
+                    for(let i =0;i<models.length;i++){
+                        html += `
+                        <option value="`+models[i]['id']+`">`+models[i]['name']+`</option>
+                        `;
+                    }
+                    $("#Model").html(html);
+                }
+            });
+
+        });
+
+    });
 
 </script>
 @endsection
