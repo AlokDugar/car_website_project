@@ -61,6 +61,10 @@
         <div class="col-sm-6 col-md-3">
             <a href="#" class="btn btn-success btn-block"> Search </a>
         </div>
+        <form action="{{ route('dashboard_cars.download-excel') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-success btn-block">Export</button>
+        </form>
     </div>
 
     <!-- Car Table -->

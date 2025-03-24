@@ -85,6 +85,7 @@ Route::get('/get-models/{id}',[DashboardCarController::class,'getModels'])->midd
 Route::get('/get-cities/{id}',[DashboardCarController::class,'getCities'])->middleware(AdminAuth::class);
 
 Route::post('dashboard_users/export-excel', [UserController::class, 'downloadExcel'])->name('dashboard_users.download-excel')->middleware(AdminAuth::class);
+Route::post('dashboard_cars/export-excel', [DashboardCarController::class, 'downloadExcel'])->name('dashboard_cars.download-excel')->middleware(AdminAuth::class);
 
 
 

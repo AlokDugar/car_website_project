@@ -7,6 +7,8 @@ use App\Models\CarFeatures;
 use App\Models\CarModel;
 use App\Models\City;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CarsDataExport;
 
 class DashboardCarController extends Controller
 {
@@ -161,4 +163,9 @@ class DashboardCarController extends Controller
         $cities = City::where('state_id',$state_id)->get();
         return response()->json(['cities'=>$cities]);
     }
+
+    public function downloadExcel()
+{
+    return Excel::download(new CarsDataExport, 'cars.xlsx');
+}
 }
