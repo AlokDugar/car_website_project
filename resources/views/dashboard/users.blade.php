@@ -50,6 +50,10 @@
             @csrf
             <button type="submit" class="btn btn-success btn-block">Export</button>
         </form>
+        <form action="{{ route('dashboard_users.download-pdf') }}" method="POST">
+            @csrf
+            <button type="submit">Download PDF</button>
+        </form>
 
     </div>
 

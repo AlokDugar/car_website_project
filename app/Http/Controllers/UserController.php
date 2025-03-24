@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserDetailsMail;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -85,5 +87,18 @@ public function update(Request $request, $id)
 {
     return Excel::download(new UsersDataExport, 'users.xlsx');
 }
+
+public function generatePDF()
+    {
+        $users = User::all();
+
+        $data = [
+            'title' => 'User Details',
+            'users' => $users
+        ];
+
+        $pdf = FacadePdf::loadView('pdf.usersView', $data);
+        return $pdf->download('users-lists.pdf');
+    }
 
 }
