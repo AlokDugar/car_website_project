@@ -78,11 +78,13 @@ Route::post('/adminlogout', function () {
     return redirect('/adminlogin')->with('success', 'You have been logged out!');
 })->name('adminlogout')->middleware(AdminAuth::class);
 
-Route::resource('dashboard_users', UserController::class)->middleware(AdminAuth::class);
+Route::resource('dashboard_users', UserController::class)->except(['show'])->middleware(AdminAuth::class);
 Route::resource('dashboard_cars',DashboardCarController::class)->middleware(AdminAuth::class);
 
 Route::get('/get-models/{id}',[DashboardCarController::class,'getModels'])->middleware(AdminAuth::class);
 Route::get('/get-cities/{id}',[DashboardCarController::class,'getCities'])->middleware(AdminAuth::class);
+
+Route::post('dashboard_users/export-excel', [UserController::class, 'downloadExcel'])->name('dashboard_users.download-excel')->middleware(AdminAuth::class);
 
 
 

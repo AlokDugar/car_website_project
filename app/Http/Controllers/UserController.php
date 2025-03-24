@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersDataExport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserDetailsMail;
 use Illuminate\Support\Str;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -17,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(5);
+        $users = User::all();
         return view('dashboard.users', compact('users'));
     }
 
@@ -79,5 +80,10 @@ public function update(Request $request, $id)
         $dashboard_user->delete();
         return redirect()->route('dashboard_users.index')->with('success', 'User deleted successfully.');
     }
+
+    public function downloadExcel()
+{
+    return Excel::download(new UsersDataExport, 'users.xlsx');
+}
 
 }

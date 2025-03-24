@@ -46,6 +46,11 @@
         <div class="col-sm-6 col-md-3">
             <a href="#" class="btn btn-success btn-block"> Search </a>
         </div>
+        <form action="{{ route('dashboard_users.download-excel') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-success btn-block">Export</button>
+        </form>
+
     </div>
 
     <!-- User Table -->
@@ -94,7 +99,6 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{$users->onEachSide(1)->links()}}
             </div>
         </div>
     </div>
@@ -235,6 +239,10 @@ function deleteUser(id) {
     $('#deleteForm').attr('action', action);
 }
 
+document.querySelector("#exportForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    this.submit();
+});
 
 </script>
 @endsection
