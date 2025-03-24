@@ -204,25 +204,14 @@
 </script>
 
 
-<!-- Delete User Modal -->
-<div class="modal custom-modal fade" id="delete_employee" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Delete User</h3>
-                    <p>Are you sure you want to delete?</p>
-                </div>
-                <form id="deleteForm" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<form id="deleteForm" method="POST">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 $(document).on('click', '.edit-user', function() {
@@ -239,8 +228,30 @@ $(document).on('click', '.edit-user', function() {
 });
 
 function deleteUser(id) {
-    let action = "/dashboard_users/" + id;
-    $('#deleteForm').attr('action', action);
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Once deleted, it's gone!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Delete'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Deleted!',
+                text: '{{ session("success") }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let action = "/dashboard_users/" + id;
+            $('#deleteForm').attr('action', action);
+                $('#deleteForm').submit();
+                }
+            });
+        }
+    });
 }
 
 document.querySelector("#exportForm").addEventListener("submit", function(e) {

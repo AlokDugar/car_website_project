@@ -80,7 +80,7 @@ public function update(Request $request, $id)
      */
     public function destroy(User $dashboard_user) {
         $dashboard_user->delete();
-        return redirect()->route('dashboard_users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('dashboard_users.index');
     }
 
     public function downloadExcel()
