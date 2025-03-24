@@ -10,6 +10,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\DashboardCarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ModelController;
 use App\Http\Controllers\SignUpController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminAuth;
@@ -80,6 +81,7 @@ Route::post('/adminlogout', function () {
 
 Route::resource('dashboard_users', UserController::class)->except(['show'])->middleware(AdminAuth::class);
 Route::resource('dashboard_cars',DashboardCarController::class)->middleware(AdminAuth::class);
+Route::resource('dashboard_models',ModelController::class)->middleware(AdminAuth::class);
 
 Route::get('/get-models/{id}',[DashboardCarController::class,'getModels'])->middleware(AdminAuth::class);
 Route::get('/get-cities/{id}',[DashboardCarController::class,'getCities'])->middleware(AdminAuth::class);
