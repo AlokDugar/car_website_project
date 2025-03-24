@@ -191,7 +191,7 @@ class HomeController extends Controller
         $cars = Car::limit(30)->get();
         return view('home.index',['cars'=>$cars]);
 */
-        $cars=Car::with(['city.state','carType','fuelType','maker','carModel'])->get();
+        $cars=Car::with(['city.state','carType','fuelType','maker','carModel'])->paginate(20);
         return view('home.index',['cars'=>$cars]);
     }
 }

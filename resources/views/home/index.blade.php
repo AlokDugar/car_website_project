@@ -99,6 +99,7 @@
               @endforeach
             </div>
           </div>
+          {{$cars->onEachSide(1)->links()}}
         </section>
         <!--/ New Cars -->
     </main>
