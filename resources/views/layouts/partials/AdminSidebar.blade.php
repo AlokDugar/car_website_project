@@ -8,10 +8,7 @@
                         <li><a class="{{Request::routeIs('dashboard_users.index')?'active':''}}" href="{{url('/dashboard_users')}}">Users</a></li>
                         <li><a class="{{Request::routeIs('dashboard_cars.index')?'active':''}}" href="{{url('/dashboard_cars')}}">Cars</a></li>
                         <li><a class="{{Request::routeIs('dashboard_models.index')?'active':''}}" href="{{url('/dashboard_models')}}">Models</a></li>
-
                     </ul>
-                </li>
-
                 </li>
             </ul>
         </div>
